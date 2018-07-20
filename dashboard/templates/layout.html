@@ -1,0 +1,59 @@
+{% set nav_bar = [
+    ("/drive", "drive", "Drive"),
+    ("/dev", "dev", "Development")
+] -%}
+{% set active_page = active_page|default("none") -%}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Team {{ team_number }} Dashboard - {{ page_title }}</title>
+
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/main.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/font-awesome.min.css") }}">
+
+    <script src="{{ url_for("static", filename="javascript/jquery-3.3.1.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="javascript/popper.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="javascript/tooltip.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="javascript/bootstrap.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="javascript/socket.io.min.js") }}"></script>
+
+    {% block head %}{% endblock %}
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Chimpanel</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    {% for href, id, name in nav_bar %}
+                    <li class="nav-item{% if id == active_page %} active{% endif %}">
+                        <a class="nav-link" href="{{ href|e }}">{{ name|e }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block board %}
+            <div class="jumbotron">
+                <h1>Label</h1>
+                <p class="lead">Image will go here</p>
+            </div>
+        {% endblock %}
+    </div>
+
+</body>
+</html>
