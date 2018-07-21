@@ -1,0 +1,6 @@
+{
+    "MAIN_LOOP_PERIOD": {
+        "writable": true,
+        "value": 0.05
+    }
+}
