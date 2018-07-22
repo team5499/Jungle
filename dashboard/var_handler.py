@@ -6,7 +6,7 @@ import json
 
 class VariableHandler():
     
-    MIN_FLUSH_PERIOD = 0.25 # minimum time between file flushes. If set too low, this can put a lot of unneccesary load on the system
+    MIN_FLUSH_PERIOD_S = 0.25 # minimum time between file flushes. If set too low, this can put a lot of unneccesary load on the system
 
     def __init__(self, file_path="./vars.json"):
         try:
@@ -78,7 +78,7 @@ class VariableHandler():
         thread.start()
 
     def _write_file(self):
-        while time.perf_counter() - self._last_flush_time < VariableHandler.MIN_FLUSH_PERIOD:
+        while time.perf_counter() - self._last_flush_time < VariableHandler.MIN_FLUSH_PERIOD_S:
             pass # wait until minimum period has elapsed
         with self._flush_lock:
             self.data_file.seek(0)
