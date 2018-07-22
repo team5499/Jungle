@@ -24,6 +24,8 @@ class Dashboard():
 
     def stop(self):
         self.thread.join(0)
+
+    ### WEB PAGES ###
     
     @staticmethod
     @app.route("/")
@@ -31,20 +33,11 @@ class Dashboard():
         """Redirect the client to the `drive` page"""
         return redirect(f"/drive")
 
-    ### WEB PAGES ###
-
     @staticmethod
-    @app.route("/drive")
-    def drive():
+    @app.route("/<page>")
+    def load_page(page=None):
         return render_template(
-            "drive.html",
-            team_number=current_app.web_instance.team_number)
-    
-    @staticmethod
-    @app.route("/dev")
-    def dev():
-        return render_template(
-            "dev.html",
+            f"{page}.html", 
             team_number=current_app.web_instance.team_number)
 
     ### SOCKET.IO EVENTS ###
