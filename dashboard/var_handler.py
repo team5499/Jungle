@@ -27,14 +27,14 @@ class VariableHandler():
 
     def _check_json(self, raw_json_obj):
         problems = []
-        for k, v in raw_json_obj:
+        for k, v in raw_json_obj.items():
             if "value" not in v: # variable must contain "value" property
                 problems.append(k)
                 continue
             if "writable" not in v: # variable must contain "writable" property
                 problems.append(k)
                 continue
-            if not issubclass(v["writable"], bool): # "writable" property must be a boolean
+            if not issubclass(bool, v["writable"].__class__): # "writable" property must be a boolean
                 problems.append(k)
                 continue
             if not v["value"]: # "value" property must not be null, or None
