@@ -34,6 +34,12 @@ class Dashboard():
         return redirect(f"/drive")
 
     @staticmethod
+    @app.route("/favicon.ico")
+    def favicon():
+        """Handle favicon request for redirect page"""
+        return None
+
+    @staticmethod
     @app.route("/<page>")
     def load_page(page=None):
         return render_template(
