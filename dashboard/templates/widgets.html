@@ -1,14 +1,14 @@
 {% macro raw_var_editor(kwargs) %}
-<div class="card m-1" style="width: {{ kwargs["width"]|default("auto") }};">
+<div class="card m-1" style="width: {{ kwargs["width"]|default("auto") }};" id="{{ kwargs["id"] }}" id="#{{ kwargs["id"] }}_card" role="tablist">
     <div class="card-header p-1">
-        <h5 class="m-0 d-inline">{{ kwargs["title"] }}</h5>
-        <a class="btn-primary"><h5 class="fas fa-cog float-right m-0 d-inline"></h5></a>
+        <h4 class="m-0 d-inline">{{ kwargs["title"] }}</h4>
+        <a class="btn btn-light float-right d-inline p-1" role="button" data-toggle="collapse" href=".{{ kwargs["id"] }}_collapse"><h5 class="fas fa-cog m-0"></h5></a>
     </div>
-    <div class="card-body p-2">
+    <div class="card-body p-2 collapse show {{ kwargs["id"] }}_collapse">
         <input class="form-control mb-2" type="text" placeholder="Null">
         <button class="btn btn-primary">Submit</button>
     </div>
-    <div class="card-body p-2 {% if not kwargs["template"] -%} d-none {%- endif %}">
+    <div class="card-body p-2 collapse {{ kwargs["id"] }}_collapse" id="{{ kwargs["id"] }}_settings">
         <!-- settings -->
         
         <button class="btn btn-light">Save</button>
