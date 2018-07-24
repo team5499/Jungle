@@ -6,7 +6,7 @@
                 "type": "raw_var_editor",
                 "args": {
                     "title": "Test Variable Editor",
-                    "width": "20rem",
+                    "width": "12rem",
                     "variable": "TEST"
                 }
             }

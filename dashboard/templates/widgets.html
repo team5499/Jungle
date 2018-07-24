@@ -1,12 +1,16 @@
 {% macro raw_var_editor(kwargs) %}
 <div class="card m-1" style="width: {{ kwargs["width"]|default("auto") }};">
-    <h3 class="card-header p-1">{{ kwargs["title"] }}</h3>
+    <div class="card-header p-1">
+        <h5 class="m-0">{{ kwargs["title"] }}</h5>
+    </div>
     <div class="card-body p-2">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+        <input class="form-control mb-2" type="text" placeholder="Null">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+    <div class="card-body p-2 {% if not kwargs["template"] -%} d-none {%- endif %}">
+        <!-- settings -->
+        
+        <button class="btn btn-light">Save</button>
     </div>
 </div>
 {%- endmacro %}

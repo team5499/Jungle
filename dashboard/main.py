@@ -22,10 +22,16 @@ class Dashboard():
         self.var_handle = VariableHandler(file_path=var_path)
         self.conf_handler = ConfigurationHandler(file_path=conf_path)
 
-        self.thread = threading.Thread(target=Dashboard._server_thread, args=[address, port, debug], name="Dashboard Server", daemon=True)
+        self.address = address
+        self.port = port
+        self.debug = debug
+        # self.thread = threading.Thread(target=Dashboard._server_thread, args=[address, port, debug], name="Dashboard Server", daemon=True)
+
+    def start(self):
+        Dashboard._server_thread(self.address, self.port, self.debug)
 
     def stop(self):
-        self.thread.join(0)
+        pass
 
     ### WEB PAGES ###
     
@@ -91,16 +97,16 @@ class Dashboard():
 
     @staticmethod
     def _server_thread(host, port, debug):
-        Dashboard.sio.run(Dashboard.app, host=host, port=port, debug=debug) # make sure to change host to 0.0.0.0 for deployment
+        Dashboard.sio.run(Dashboard.app, host=host, port=port, debug=debug) # make sure host is 0.0.0.0 for deployment
 
 def main(**kwargs):
     dashboard = Dashboard(kwargs["conf"], kwargs["vars"], kwargs["addr"], kwargs["port"], team_number=5499, debug=kwargs["debug"])
-    dashboard.thread.start()
     def interrupt_handler(sig, frame):
         print("shutting down...")
         dashboard.stop()
+        exit(0)
     signal.signal(signal.SIGINT, interrupt_handler)
-    signal.pause()
+    dashboard.start()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
