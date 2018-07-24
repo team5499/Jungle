@@ -1,8 +1,41 @@
 {
     "drive": {
-        "title": "Drive"
+        "title": "Drive",
+        "widgets": [
+            {
+                "type": "raw_var_editor",
+                "args": {
+                    "title": "Test Variable Editor",
+                    "width": "20rem",
+                    "variable": "TEST"
+                }
+            }
+        ]
     },
     "dev": {
-        "title": "Development"
+        "title": "Development",
+        "widgets": [
+            {
+                "type": "raw_var_editor",
+                "args": {
+                    "title": "Test Variable Editor",
+                    "width": "40rem",
+                    "variable": "TEST"
+                }
+            }
+        ]
+    },
+    "test": {
+        "title": "Test",
+        "widgets": [
+            {
+                "type": "raw_var_editor",
+                "args": {
+                    "title": "Test Variable Editor",
+                    "width": "40rem",
+                    "variable": "TEST"
+                }
+            }
+        ]
     }
 }

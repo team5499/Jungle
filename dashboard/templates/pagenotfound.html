@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>404 - Page Not Found</title>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='cropped-orangutan-logo-green-FINAL.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ url_for('static', filename='cropped-orangutan-logo-green-FINAL.png') }}" sizes="32x32">
+</head>
+
+<body style="background-color: rgb(240, 249, 254); text-align: center">
+    <h1>Uh oh, looks like that page doesn't exist</h1>
+    <img src="{{ url_for("static", filename="imgs/notfound404.png") }}", style="width:40%;">
+</body>
+</html>

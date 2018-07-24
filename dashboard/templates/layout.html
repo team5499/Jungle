@@ -1,8 +1,4 @@
-{% set nav_bar = [
-    ("/drive", "drive", "Drive"),
-    ("/dev", "dev", "Development")
-] -%}
-{% set active_page = active_page|default("none") -%}
+{% import "widgets.html" as widgets -%}
 
 <!doctype html>
 <html lang="en">
@@ -53,12 +49,11 @@
     </nav>
 
     <div class="container-fluid m-0">
-        {% block board %}
-            <div class="jumbotron">
-                <h1>Label</h1>
-                <p class="lead">Image will go here</p>
-            </div>
-        {% endblock %}
+        <div class="row">
+            {% for w in widget_list %}
+                {{ widgets[w["type"]](w["args"]) }}
+            {% endfor %}
+        </div>
     </div>
 
     <script src="{{ url_for("static", filename="javascript/jquery-3.3.1.min.js") }}"></script>

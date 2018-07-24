@@ -42,11 +42,20 @@ class ConfigurationHandler():
     def get_formatted_json_string(self):
         return json.dumps(self.raw_json_obj, indent=4, sort_keys=True)
 
-    def get_page_list(self):
+    def get_page_ids(self):
         return self.raw_json_obj.keys()
 
-    def get_page_list_alpha(self):
-        return sorted(self.get_page_list(), key=str.lower)
+    def get_nav_bar(self):
+        nav_bar = []
+        for k, v in self.raw_json_obj.items():
+            nav_bar.append((f"/{k}", k, v['title']))
+        return nav_bar
+
+    def get_page_title(self, page):
+        return self.raw_json_obj[page]["title"]
+
+    def get_page_widgets(self, page):
+        return self.raw_json_obj[page]["widgets"]
 
     def contains_page(self, key):
         return key in self.raw_json_obj
