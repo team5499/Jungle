@@ -5,7 +5,7 @@
             {
                 "type": "raw_var_editor",
                 "args": {
-                    "title": "Test Variable Editor",
+                    "title": "Test Variable",
                     "width": "12rem",
                     "variable": "TEST"
                 }
@@ -18,7 +18,7 @@
             {
                 "type": "raw_var_editor",
                 "args": {
-                    "title": "Test Variable Editor",
+                    "title": "Test Variable",
                     "width": "40rem",
                     "variable": "TEST"
                 }
@@ -31,7 +31,7 @@
             {
                 "type": "raw_var_editor",
                 "args": {
-                    "title": "Test Variable Editor",
+                    "title": "Test Variable",
                     "width": "40rem",
                     "variable": "TEST"
                 }
