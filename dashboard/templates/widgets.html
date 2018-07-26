@@ -1,17 +1,40 @@
-{% macro raw_var_editor(kwargs) %}
-<div class="card m-1" style="width: {{ kwargs["width"]|default("auto") }};" id="{{ kwargs["id"] }}" id="#{{ kwargs["id"] }}_card" role="tablist">
+<!-- raw_var_editor widget -->
+{% macro raw_var_editor_main(title, id, width, height, vars, non_vars, kwargs) %}
+    <input class="form-control mb-2" type="text" id="{{ id }}_var_display" placeholder="Null">
+    <button class="btn btn-primary">Submit</button>
+{% endmacro %}
+{% macro raw_var_editor_settings(title, id, width, height, vars, non_vars, kwargs) %}
+        <input class="form-control mb-2" type="text" name="variables.target" value="{{ vars["target"] }}">
+{% endmacro %}
+
+
+
+<!-- widget frame -->
+{% macro widget_outline(page, widgets, type, title, id, width, height, vars, non_vars, kwargs) %}
+<div class="card m-1" style="width: {{ width|default("auto") }}; height: {{ height|default("auto") }};" id="{{ id }}" id="#{{ id }}_card">
     <div class="card-header p-1">
-        <h4 class="m-0 d-inline">{{ kwargs["title"] }}</h4>
-        <a class="btn btn-light float-right d-inline p-1" role="button" data-toggle="collapse" href=".{{ kwargs["id"] }}_collapse"><h5 class="fas fa-cog m-0"></h5></a>
+        <h4 class="m-0 d-inline">{{ title }}</h4>
+        <a class="btn btn-light float-right d-inline p-1" role="button" data-toggle="collapse" href=".{{ id }}_collapse"><h5 class="fas fa-cog m-0"></h5></a>
     </div>
-    <div class="card-body p-2 collapse show {{ kwargs["id"] }}_collapse">
-        <input class="form-control mb-2" type="text" placeholder="Null">
-        <button class="btn btn-primary">Submit</button>
+    <div class="card-body p-2 collapse show {{ id }}_collapse">
+        <!-- main view -->
+        <div class="alert alert-danger p-2 collapse {%- if non_vars|count > 0 %} show {%- endif %}" role="alert">
+            The following variables dont exist:
+            <br />
+            {% for k, v in non_vars.items() %}
+                <small>{{ v }},</small>
+            {%- endfor %}
+        </div>
+        {{ widgets[type + "_main"](title, id, width, height, vars, non_vars, kwargs) }}
     </div>
-    <div class="card-body p-2 collapse {{ kwargs["id"] }}_collapse" id="{{ kwargs["id"] }}_settings">
+    <div class="card-body p-2 collapse {{ id }}_collapse" id="{{ id }}_settings">
         <!-- settings -->
-        
-        <button class="btn btn-light">Save</button>
+        <form action="/_update_widget" method="post" autocomplete="off">
+            <input class="d-none" name="_page" type="text" value="{{ page }}">
+            <input class="d-none" name="_id" type="text" value="{{ id }}">
+            {{ widgets[type + "_settings"](title, id, width, height, vars, non_vars, kwargs) }}
+            <button class="btn btn-light" type="submit">Save</button>
+        </form>
     </div>
 </div>
 {%- endmacro %}

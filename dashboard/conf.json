@@ -1,42 +1,38 @@
 {
-    "drive": {
-        "title": "Drive",
-        "widgets": [
-            {
-                "type": "raw_var_editor",
-                "args": {
-                    "title": "Test Variable",
+    "pages": {
+        "dev": {
+            "title": "Development",
+            "widgets": []
+        },
+        "drive": {
+            "title": "Drive",
+            "widgets": [
+                {
+                    "height": null,
                     "id": "test_var_editor",
-                    "width": "12rem",
-                    "variable": "TEST"
-                }
-            }
-        ]
-    },
-    "dev": {
-        "title": "Development",
-        "widgets": [
-            {
-                "type": "raw_var_editor",
-                "args": {
+                    "kwargs": {},
                     "title": "Test Variable",
-                    "width": "40rem",
-                    "variable": "TEST"
+                    "type": "raw_var_editor",
+                    "variables": {
+                        "target": "MAIN_LOOP_PERIOD"
+                    },
+                    "width": "12rem"
                 }
-            }
-        ]
+            ]
+        },
+        "test": {
+            "title": "Test",
+            "widgets": []
+        }
     },
-    "test": {
-        "title": "Test",
-        "widgets": [
-            {
-                "type": "raw_var_editor",
-                "args": {
-                    "title": "Test Variable",
-                    "width": "40rem",
-                    "variable": "TEST"
-                }
-            }
-        ]
+    "widget_templates": {
+        "raw_var_editor": {
+            "height": null,
+            "kwargs": {},
+            "variables": {
+                "target": "TEST"
+            },
+            "width": "12rem"
+        }
     }
 }

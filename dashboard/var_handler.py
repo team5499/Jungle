@@ -57,7 +57,7 @@ class VariableHandler():
     def get_vars_list_alpha(self):
         return sorted(self.get_vars_list(), key=str.lower)
 
-    def contains_key(self, key):
+    def contains_var(self, key):
         return key in self.raw_json_obj
 
     def get_json_var(self, key):

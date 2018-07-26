@@ -1,14 +1,13 @@
 import time
 import threading
 import os
-from copy import deepcopy
 import json
 
 class ConfigurationHandler():
     
     MIN_FLUSH_PERIOD_S = 0.25 # minimum time between file flushes. If set too low, this can put a lot of unneccesary load on the system
 
-    def __init__(self, file_path="./conf.json"):
+    def __init__(self, file_path="./conf.json", debug=False):
         try:
             self.data_file = open(file_path, "r+")
         except FileNotFoundError:
@@ -19,8 +18,7 @@ class ConfigurationHandler():
         except ValueError:
             print("json formatting issue")
             exit(1)
-        self.orig_json_obj = deepcopy(self.raw_json_obj) # this object is what gets written to the actual file
-        self._orig_json_lock = threading.RLock()
+        self.debug = debug
         self._flush_lock = threading.RLock()
         self._last_flush_time = 0
         self._check_json(self.raw_json_obj)
@@ -36,42 +34,49 @@ class ConfigurationHandler():
             print(problems)
             exit(1)
 
+    def get_raw_json_obj(self):
+        if self.debug:
+            self.data_file.seek(0)
+            self.raw_json_obj = json.load(self.data_file)
+        return self.raw_json_obj
+
     def get_compact_json_string(self):
-        return json.dumps(self.raw_json_obj)
+        return json.dumps(self.get_raw_json_obj())
     
     def get_formatted_json_string(self):
-        return json.dumps(self.raw_json_obj, indent=4, sort_keys=True)
+        return json.dumps(self.get_raw_json_obj(), indent=4, sort_keys=True)
 
     def get_page_ids(self):
-        return self.raw_json_obj.keys()
+        return self.get_raw_json_obj()["pages"].keys()
 
     def get_nav_bar(self):
         nav_bar = []
-        for k, v in self.raw_json_obj.items():
+        for k, v in self.get_raw_json_obj()["pages"].items():
             nav_bar.append((f"/{k}", k, v['title']))
         return nav_bar
 
     def get_page_title(self, page):
-        return self.raw_json_obj[page]["title"]
+        return self.get_raw_json_obj()["pages"][page]["title"]
 
     def get_page_widgets(self, page):
-        return self.raw_json_obj[page]["widgets"]
+        return self.get_raw_json_obj()["pages"][page]["widgets"]
 
     def contains_page(self, key):
-        return key in self.raw_json_obj
+        return key in self.get_raw_json_obj()["pages"]
 
-    # def get_json_var(self, key):
-    #     assert self.contains_page(key), f"FATAL: the variable {key} does not exist"
-    #     return self.raw_json_obj[key]["value"]
-
-    # def set_json_var(self, key, value):
-    #     assert self.contains_key(key), f"FATAL: the variable {key} does not exist"
-    #     self.raw_json_obj[key]["value"] = value
-    #     with self._orig_json_lock:
-    #         if self.orig_json_obj[key]["writable"]:
-    #             self.orig_json_obj[key]["value"] = value
-    #     if self.raw_json_obj[key]["writable"]:
-    #         self.write_file()
+    def edit_widget_attr(self, page, id, key, value):
+        path = key.split(".")
+        widgets = self.raw_json_obj["pages"][page]["widgets"]
+        widget = None
+        for w in widgets:
+            if w["id"] == id:
+                widget = w
+                break
+        current_item = widget[path[0]]
+        for k in path[1:-1]:
+            current_item = current_item[k]
+        current_item[path[-1]] = value
+        self.write_file()
 
     def write_file(self): # starts a thread for writing and flushing, since this operation does take time
         thread = threading.Thread(target=self._write_file, args=[], name=f"write_thread{time.perf_counter()}", daemon=True)
@@ -82,8 +87,7 @@ class ConfigurationHandler():
             pass # wait until minimum period has elapsed
         with self._flush_lock:
             self.data_file.seek(0)
-            with self._orig_json_lock:
-                json.dump(self.orig_json_obj, self.data_file, indent=4, sort_keys=True) # pretty dump
+            json.dump(self.raw_json_obj, self.data_file, indent=4, sort_keys=True) # pretty dump
             self.data_file.truncate()
             self.data_file.flush() # takes time
             os.fsync(self.data_file.fileno()) # takes time
