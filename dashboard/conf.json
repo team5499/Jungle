@@ -14,7 +14,7 @@
                     "title": "Test Variable",
                     "type": "raw_var_editor",
                     "variables": {
-                        "target": "TEST"
+                        "target": "MAIN_LOOP_PERIOD"
                     },
                     "width": "12rem"
                 }

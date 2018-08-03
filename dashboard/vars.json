@@ -1,5 +1,6 @@
 {
     "MAIN_LOOP_PERIOD": {
+        "buffered": false,
         "writable": true,
         "value": 0.05
     }
