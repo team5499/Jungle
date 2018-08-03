@@ -62,7 +62,11 @@
     <script src="{{ url_for("static", filename="javascript/bootstrap.min.js") }}"></script>
     <script src="{{ url_for("static", filename="javascript/socket.io.min.js") }}"></script>
     <script src="{{ url_for("static", filename="javascript/main.js") }}"></script>
-    <script>console.log("{{ message }}");</script>
+    <script>
+        {% for w in widget_list %}
+            var {{ w["id"] }} = new {{ w["javascript_class"] }}({{ w|to_json|safe }})
+        {% endfor %}
+    </script>
 
 </body>
 </html>

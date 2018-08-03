@@ -1,7 +1,7 @@
 <!-- raw_var_editor widget -->
 {% macro raw_var_editor_main(title, id, width, height, vars, non_vars, kwargs) %}
     <input class="form-control mb-2" type="text" id="{{ id }}_var_display" placeholder="Null">
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary" id="{{ id }}_submit">Submit</button>
 {% endmacro %}
 {% macro raw_var_editor_settings(title, id, width, height, vars, non_vars, kwargs) %}
         <input class="form-control mb-2" type="text" name="variables.target" value="{{ vars["target"] }}">

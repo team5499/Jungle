@@ -3,6 +3,7 @@ import time
 import threading
 import argparse
 import signal
+import json
 from copy import deepcopy
 from flask import Flask, render_template, current_app, redirect, abort, request
 from flask_socketio import SocketIO, emit, join_room
@@ -34,7 +35,7 @@ class Dashboard():
     def stop(self):
         pass
 
-    ### WEB PAGES ###
+    ### FLASK ###
     
     @staticmethod
     @app.route("/")
@@ -77,6 +78,11 @@ class Dashboard():
     def page_not_found(e):
         return render_template("pagenotfound.html"), 404
 
+    @staticmethod
+    @app.template_filter("to_json")
+    def to_json(value):
+        return json.dumps(value)
+
     ### SOCKET.IO EVENTS ###
 
     @staticmethod
@@ -107,7 +113,7 @@ class Dashboard():
     def get_page_widgets(page):
         widgets = current_app.web_instance.conf_handler.get_page_widgets(page)
         widgets_b = deepcopy(widgets)
-        for i in range(len(widgets)):
+        for i in range(len(widgets)): # Make sure to warn about non - existant variables
             non_vars = {}
             for k, v in widgets[i]["variables"].items():
                 if not current_app.web_instance.var_handler.contains_var(v):
