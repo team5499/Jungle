@@ -47,7 +47,7 @@ class Dashboard():
     @app.route("/favicon.ico")
     def favicon():
         """Handle favicon request for redirect page"""
-        return None
+        return abort(404)
 
     @staticmethod
     @app.route("/_update_widget", methods=["POST"])
