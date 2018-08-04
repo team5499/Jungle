@@ -6,16 +6,13 @@ class SocketInterface {
 
     connect() {
         if(this.socket == null) {
-            console.log(window.location.protocol)
-            console.log(window.location.host)
-            console.log(window.location.pathname)
-            this.socket = io("http://localhost:" + this.port);
+            this.socket = io(window.location.protocol + "//" + window.location.host, {transports: ['websocket']});
             this._init();
         }
     }
 
     _init() {
-        this.socket.on("connection", function (socket) {
+        this.socket.on("connect", function (socket) {
             console.log("connection");
         });
     }
@@ -37,9 +34,7 @@ class RawVarEditor {
         this.input = $("#" + id + "_var_display");
         this.submit_button = $("#" + id + "_submit");
         this.submit_button.click(function(event) {
-            console.log("connecting");
             SocketInterface.get_instance().connect();
-            console.log("finished connecting");
         });
     }
 }
