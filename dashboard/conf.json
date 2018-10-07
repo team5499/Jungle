@@ -10,14 +10,14 @@
                 {
                     "height": null,
                     "id": "test_var_editor",
+                    "javascript_class": "RawVarEditor",
                     "kwargs": {},
                     "title": "Test Variable",
                     "type": "raw_var_editor",
                     "variables": {
-                        "target": "MAIN_LOOP_PERIOD"
+                        "target": "TEST"
                     },
-                    "width": "12rem",
-                    "javascript_class": "RawVarEditor"
+                    "width": "12rem"
                 }
             ]
         },
@@ -29,12 +29,12 @@
     "widget_templates": {
         "raw_var_editor": {
             "height": null,
+            "javascript_class": "RawVarEditor",
             "kwargs": {},
             "variables": {
                 "target": "TEST"
             },
-            "width": "12rem",
-            "javascript_class": "RawVarEditor"
+            "width": "12rem"
         }
     }
 }

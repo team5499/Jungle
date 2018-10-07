@@ -63,7 +63,7 @@ class Dashboard():
     @app.route("/<page>")
     def load_page(page=None):
         if not page in Dashboard.get_page_ids():
-            abort(404)
+            return abort(404)
         return render_template(
             f"layout.html", 
             team_number=Dashboard.get_team_number(),
