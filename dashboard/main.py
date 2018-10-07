@@ -47,7 +47,7 @@ class Dashboard():
     @app.route("/favicon.ico")
     def favicon():
         """Handle favicon request for redirect page"""
-        return None
+        return abort(404)
 
     @staticmethod
     @app.route("/_update_widget", methods=["POST"])
@@ -63,7 +63,7 @@ class Dashboard():
     @app.route("/<page>")
     def load_page(page=None):
         if not page in Dashboard.get_page_ids():
-            abort(404)
+            return abort(404)
         return render_template(
             f"layout.html", 
             team_number=Dashboard.get_team_number(),
