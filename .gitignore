@@ -3,3 +3,9 @@
 __pycache__/
 *.swp
 .gradle/
+bin/
+build/
+.settings 
+.classpath
+.project
+.gradletasknamecache
