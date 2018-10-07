@@ -2,3 +2,10 @@
 .DS_Store
 __pycache__/
 *.swp
+.gradle/
+bin/
+build/
+.settings 
+.classpath
+.project
+.gradletasknamecache
