@@ -6,20 +6,27 @@ class SocketInterface {
 
     connect() {
         if(this.socket == null) {
-            this.socket = io('http://localhost:' + this.port)
-            this.init()
+            this.socket = io(window.location.protocol + "//" + window.location.host, {transports: ['websocket']});
+            this._init();
         }
     }
 
-    init() {
-        if(this.socket == null) {
-            this.connect()
-        }
-        this.socket.on('connection', function (socket) {
-
+    _init() {
+        this.socket.on("connect", function (socket) {
+            console.log("connection");
         });
     }
+
+    static get_instance() {
+        if(SocketInterface.INSTANCE == null) {
+            SocketInterface.INSTANCE = new SocketInterface(SocketInterface.PORT);
+        }
+        return SocketInterface.INSTANCE;
+    }
 }
+SocketInterface.PORT = 5800;
+SocketInterface.INSTANCE = null;
+
 
 class RawVarEditor {
     constructor(kwargs) {
@@ -27,7 +34,7 @@ class RawVarEditor {
         this.input = $("#" + id + "_var_display");
         this.submit_button = $("#" + id + "_submit");
         this.submit_button.click(function(event) {
-            console.log("Click");
+            SocketInterface.get_instance().connect();
         });
     }
 }
