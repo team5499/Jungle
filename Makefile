@@ -15,7 +15,6 @@ test: virtualenv_run
 upgrade-requirements: virtualenv_run
 	virtualenv_run/bin/upgrade-requirements
 
-
 virtualenv_run:
 	virtualenv -p python3.6 virtualenv_run
 	virtualenv_run/bin/pip install -r requirements-dev.txt

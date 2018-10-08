@@ -6,7 +6,7 @@
 .gradletasknamecache
 .project
 .settings
-.tox
+.tox/
 .vscode/
 __pycache__/
 bin/
