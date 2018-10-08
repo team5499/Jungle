@@ -1,0 +1,3 @@
+pre-commit
+requirements-tools
+tox
