@@ -1,7 +1,7 @@
 {
-    "MAIN_LOOP_PERIOD": {
-        "buffered": false,
-        "writable": true,
-        "value": 0.05
-    }
+  "MAIN_LOOP_PERIOD": {
+    "buffered": false,
+    "value": 0.05,
+    "writable": true
+  }
 }

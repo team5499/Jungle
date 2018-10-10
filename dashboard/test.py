@@ -1,17 +1,17 @@
 from flask import Flask, render_template
-from flask_socketio import SocketIO, emit, join_room
 app = Flask(__name__)
 
-@app.route("/")
+
+@app.route('/')
 def index():
-    return "index page"
+    return 'index page'
 
-@app.route("/test/hello", methods=["GET"])
-@app.route("/test/hello/<name>", methods=["GET"])
+
+@app.route('/test/hello', methods=['GET'])
+@app.route('/test/hello/<name>', methods=['GET'])
 def hello_world(name=None):
-   return render_template("test.html", name=name)
+    return render_template('test.html', name=name)
 
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()
