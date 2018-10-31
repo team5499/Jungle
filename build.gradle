@@ -10,6 +10,10 @@ repositories {
 dependencies {
 }
 
+task build_xar {
+
+}
+
 // Set up python environments for pre-commit
 envs {
     bootstrapDirectory = file('.')
@@ -23,6 +27,25 @@ task install_hooks {
         exec {
             executable file("./virtualenv_run/bin/pre-commit")
             args "install", "-f", "--install-hooks"
+        }
+    }
+}
+
+task install_xar_tools {
+    dependsOn "build_envs"
+
+    doLast {
+        exec {
+            commandLine "git"
+            args "clone", "https://github.com/facebookincubator/xar.git"
+        }
+        exec {
+            executable file("./virtualenv_run/bin/pip")
+            args "install", "xar/"
+        }
+        exec {
+            commandLine "rm"
+            args "-rf", "xar/"
         }
     }
 }

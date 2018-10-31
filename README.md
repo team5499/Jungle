@@ -19,6 +19,7 @@ Before committing changes, make sure to run the pre-commit hook by executing `ma
     - How to write settings forms
     - How the configuration file is structured
 - How to install on the robot, and integrate with the robot code
+- How to setup environment for building XARs
 
 ## Dev Notes
 
