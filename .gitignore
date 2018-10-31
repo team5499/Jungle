@@ -11,4 +11,4 @@
 __pycache__/
 bin/
 build/
-virtualenv_run
+virtualenv_run/

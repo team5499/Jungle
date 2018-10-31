@@ -58,3 +58,20 @@ deploy {
         }
     }
 }
+
+// Set up python environments for pre-commit
+envs {
+    bootstrapDirectory = file('.')
+    python "virtualenv_run", "3.6.7", ["pre-commit", "requirements-tools", "tox"]
+}
+
+task install_hooks {
+    dependsOn: "build_envs"
+
+    doLast {
+        exec {
+            executable file("./virtualenv_run/bin/pre-commit")
+            args "install", "-f", "--install-hooks"
+        }
+    }
+}
