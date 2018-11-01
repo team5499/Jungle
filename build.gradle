@@ -2,19 +2,8 @@ plugins {
   id "com.jetbrains.python.envs" version "0.0.25"
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
 
-dependencies {
-}
-
-task build_xar {
-
-}
-
-// Set up python environments for pre-commit
+// Set up python environment for pre-commit and building XARs
 envs {
     bootstrapDirectory = file('.')
     python "virtualenv_run", "3.6.7", ["pre-commit", "requirements-tools", "tox"]
@@ -46,6 +35,32 @@ task install_xar_tools {
         exec {
             commandLine "rm"
             args "-rf", "xar/"
+        }
+    }
+}
+
+task build_xar {
+    dependsOn "install_xar_tools"
+
+    doLast {
+        exec {
+            executable file("./virtualenv_run/bin/pip")
+            args "install", "-r", "requirements.txt"
+        }
+        exec {
+            executable file("./virtualenv_run/bin/python")
+            args "setup.py", "bdist_xar"
+        }
+    }
+}
+
+task run_xar {
+    dependsOn "build_xar"
+
+    doLast {
+        exec {
+            executable file("./dist/dashboard.xar")
+            args "-c", "resources/conf.json", "-v", "resources/vars.json", "-a", "127.0.0.1", "-p", "5800"
         }
     }
 }

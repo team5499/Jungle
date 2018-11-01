@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import argparse
 import signal
 import json
 from copy import deepcopy
 from flask import Flask, render_template, current_app, redirect, abort, request
 from flask_socketio import SocketIO, emit, join_room
 
-from var_handler import VariableHandler
-from conf_handler import ConfigurationHandler
+from dashboard.var_handler import VariableHandler
+from dashboard.conf_handler import ConfigurationHandler
 
 
 class Dashboard():
@@ -144,20 +143,3 @@ def main(**kwargs):
         exit(0)
     signal.signal(signal.SIGINT, interrupt_handler)
     dashboard.start()
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--conf', required=True,
-                        help='the path to the configuration file')
-    parser.add_argument('-v', '--vars', required=True,
-                        help='the path to the variable file')
-    parser.add_argument('-a', '--addr', required=True,
-                        help='the host address for the dashboard server')
-    parser.add_argument('-p', '--port', required=True,
-                        help='the port to host the dashboard from (for the FMS, host on port 5800 to 5810')
-    parser.add_argument('-d', '--debug', required=False,
-                        help='launch the server in debug mode', action='store_true')
-
-    kwargs = vars(parser.parse_args())
-    main(**kwargs)
