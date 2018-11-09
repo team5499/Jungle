@@ -66,12 +66,12 @@ class VariableHandler():
 
     def get_json_var(self, key):
         assert self.contains_key(
-            key), f'FATAL: the variable {key} does not exist'
+            key), 'FATAL: the variable {} does not exist'.format(key)
         return self.raw_json_obj[key]['value']
 
     def set_json_var(self, key, value):
         assert self.contains_key(
-            key), f'FATAL: the variable {key} does not exist'
+            key), 'FATAL: the variable {} does not exist'.format(key)
         self.raw_json_obj[key]['value'] = value
         with self._orig_json_lock:
             if self.orig_json_obj[key]['writable']:
@@ -82,7 +82,7 @@ class VariableHandler():
     # starts a thread for writing and flushing, since this operation does take time
     def write_file(self):
         thread = threading.Thread(target=self._write_file, args=[
-        ], name=f'write_thread{time.perf_counter()}', daemon=True)
+        ], name='write_thread{}'.format(time.perf_counter()), daemon=True)
         thread.start()
 
     def _write_file(self):

@@ -54,7 +54,7 @@ class ConfigurationHandler():
     def get_nav_bar(self):
         nav_bar = []
         for k, v in self.get_raw_json_obj()['pages'].items():
-            nav_bar.append((f'/{k}', k, v['title']))
+            nav_bar.append(('/{}'.format(k), k, v['title']))
         return nav_bar
 
     def get_page_title(self, page):
@@ -83,7 +83,7 @@ class ConfigurationHandler():
     # starts a thread for writing and flushing, since this operation does take time
     def write_file(self):
         thread = threading.Thread(target=self._write_file, args=[
-        ], name=f'write_thread{time.perf_counter()}', daemon=True)
+        ], name='write_thread{}'.format(time.perf_counter()), daemon=True)
         thread.start()
 
     def _write_file(self):

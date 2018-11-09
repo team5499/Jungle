@@ -6,7 +6,7 @@ plugins {
 // Set up python environment for pre-commit and building XARs
 envs {
     bootstrapDirectory = file('.')
-    python "virtualenv_run", "3.6.7", ["pre-commit", "requirements-tools", "tox"]
+    python "virtualenv_run", "3.5.1", ["pre-commit", "requirements-tools", "tox"]
 }
 
 task install_hooks {

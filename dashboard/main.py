@@ -41,7 +41,7 @@ class Dashboard():
     @app.route('/')
     def index():
         """Redirect the client to the `drive` page"""
-        return redirect(f'/drive')
+        return redirect('/drive')
 
     @staticmethod
     @app.route('/favicon.ico')
@@ -57,7 +57,7 @@ class Dashboard():
         id = data.pop('_id')
         for k, v in data.items():
             Dashboard.edit_widget_attr(page, id, k, v)
-        return redirect(f'/{page}')
+        return redirect('/{}'.format(page))
 
     @staticmethod
     @app.route('/<page>')
@@ -65,7 +65,7 @@ class Dashboard():
         if page not in Dashboard.get_page_ids():
             return abort(404)
         return render_template(
-            f'layout.html',
+            'layout.html',
             team_number=Dashboard.get_team_number(),
             nav_bar=Dashboard.get_nav_bar(),
             active_page=page,
@@ -89,7 +89,7 @@ class Dashboard():
     @sio.on('join')
     def _join(data):
         join_room(data)
-        emit('status', f'Joined to {data}')
+        emit('status', 'Joined to {data}')
 
     # UTILITIES #
 
