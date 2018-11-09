@@ -65,12 +65,12 @@ class VariableHandler():
         return key in self.raw_json_obj
 
     def get_json_var(self, key):
-        assert self.contains_key(
+        assert self.raw_json_obj.contains_key(
             key), 'FATAL: the variable {} does not exist'.format(key)
         return self.raw_json_obj[key]['value']
 
     def set_json_var(self, key, value):
-        assert self.contains_key(
+        assert self.raw_json_obj.contains_key(
             key), 'FATAL: the variable {} does not exist'.format(key)
         self.raw_json_obj[key]['value'] = value
         with self._orig_json_lock:
