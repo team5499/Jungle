@@ -6,7 +6,7 @@ plugins {
 // Set up python environment for pre-commit and building XARs
 envs {
     bootstrapDirectory = file('.')
-    python "virtualenv_run", "3.5.1", ["pre-commit", "requirements-tools", "tox"]
+    python "virtualenv_run", "3.6.4", ["pre-commit", "requirements-tools", "tox"]
 }
 
 task install_hooks {
@@ -16,51 +16,6 @@ task install_hooks {
         exec {
             executable file("./virtualenv_run/bin/pre-commit")
             args "install", "-f", "--install-hooks"
-        }
-    }
-}
-
-task install_xar_tools {
-    dependsOn "build_envs"
-
-    doLast {
-        exec {
-            commandLine "git"
-            args "clone", "https://github.com/facebookincubator/xar.git"
-        }
-        exec {
-            executable file("./virtualenv_run/bin/pip")
-            args "install", "xar/"
-        }
-        exec {
-            commandLine "rm"
-            args "-rf", "xar/"
-        }
-    }
-}
-
-task build_xar {
-    dependsOn "install_xar_tools"
-
-    doLast {
-        exec {
-            executable file("./virtualenv_run/bin/pip")
-            args "install", "-r", "requirements.txt"
-        }
-        exec {
-            executable file("./virtualenv_run/bin/python")
-            args "setup.py", "bdist_xar"
-        }
-    }
-}
-
-task run_xar {
-    dependsOn "build_xar"
-
-    doLast {
-        exec {
-            executable file("./dist/dashboard.xar")
-            args "-c", "resources/conf.json", "-v", "resources/vars.json", "-a", "127.0.0.1", "-p", "5800"
         }
     }
 }
