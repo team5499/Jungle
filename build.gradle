@@ -1,12 +1,70 @@
 plugins {
-  id "com.jetbrains.python.envs" version "0.0.25"
+    id "com.jetbrains.python.envs" version "0.0.25"
+    // id "jaci.gradle.EmbeddedTools" version "2018.09.21"
 }
 
+repositories {
+}
 
-// Set up python environment for pre-commit and building XARs
+dependencies {
+}
+
+// deploy {
+//     targets {
+//         target("roborio") {
+//             directory = "/home/lvuser"
+//             maxChannels = 1
+//             timeout = 3
+//             failOnMissing = true
+
+//             locations {
+//                 ssh {
+//                     address = "roborio-5499-frc.local"
+//                     user = "admin"
+//                     password = ""
+//                     ipv6 = false
+//                 }
+//                 ssh {
+//                     address = "10.54.99.2"
+//                     user = "admin"
+//                     password = ""
+//                     ipv6 = false
+//                 }
+//             }
+//         }
+//     }
+
+//     artifacts {
+//         // COMMON PROPERTIES FOR ALL ARTIFACTS //
+//         all {
+//             directory = "dashboard/"
+//             targets << "roborio"
+
+//             onlyIf = { execute("echo Hi").result == "Hi\n" }
+
+//             predeploy << { execute "echo Pre" }
+//             postdeploy << { execute "echo Post" }
+
+//             disabled = true
+//         }
+//         // END COMMON //
+
+//         // FileTreeArtifact - the directory structure is preserved
+//         fileTreeArtifact("dashboard") {
+//             files = fileTree(dir: "dashboard")
+//         }
+
+//         commandArtifact("restartDashboard") {
+//             command = "echo Hello"
+//             dependsOn("dashboard")
+//             disabled = false
+//         }
+//     }
+// }
+
 envs {
-    bootstrapDirectory = file('.')
-    python "virtualenv_run", "3.6.4", ["pre-commit", "requirements-tools", "tox"]
+    bootstrapDirectory = file(".")
+    python "virtualenv_run", "3.6.4", ["pre-commit", "requirements-tools", "tox", "eventlet", "flask", "flask_socketio"]
 }
 
 task install_hooks {
@@ -16,6 +74,17 @@ task install_hooks {
         exec {
             executable file("./virtualenv_run/bin/pre-commit")
             args "install", "-f", "--install-hooks"
+        }
+    }
+}
+
+task run {
+    dependsOn "build_envs"
+
+    doLast {
+        exec {
+            executable file("./virtualenv_run/bin/python")
+            args "dashboard/main.py", "-c", "resources/conf.json", "-v", "resources/vars.json", "-a", "127.0.0.1", "-p", "5800"
         }
     }
 }
