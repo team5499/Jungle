@@ -1,6 +1,6 @@
 plugins {
     id "com.jetbrains.python.envs" version "0.0.25"
-    // id "jaci.gradle.EmbeddedTools" version "2018.09.21"
+    id "jaci.gradle.EmbeddedTools" version "2018.11.14"
 }
 
 repositories {
@@ -9,58 +9,62 @@ repositories {
 dependencies {
 }
 
-// deploy {
-//     targets {
-//         target("roborio") {
-//             directory = "/home/lvuser"
-//             maxChannels = 1
-//             timeout = 3
-//             failOnMissing = true
+deploy {
+    targets {
+        target("roborio") {
+            directory = "/home/lvuser"
+            maxChannels = 1
+            timeout = 3
+            failOnMissing = true
 
-//             locations {
-//                 ssh {
-//                     address = "roborio-5499-frc.local"
-//                     user = "admin"
-//                     password = ""
-//                     ipv6 = false
-//                 }
-//                 ssh {
-//                     address = "10.54.99.2"
-//                     user = "admin"
-//                     password = ""
-//                     ipv6 = false
-//                 }
-//             }
-//         }
-//     }
+            locations {
+                ssh {
+                    address = "roborio-5499-frc.local"
+                    user = "admin"
+                    password = ""
+                    ipv6 = false
+                }
+                ssh {
+                    address = "10.54.99.2"
+                    user = "admin"
+                    password = ""
+                    ipv6 = false
+                }
+            }
+        }
+    }
 
-//     artifacts {
-//         // COMMON PROPERTIES FOR ALL ARTIFACTS //
-//         all {
-//             directory = "dashboard/"
-//             targets << "roborio"
+    artifacts {
+        // COMMON PROPERTIES FOR ALL ARTIFACTS //
+        all {
+            directory = "dashboard/"
+            targets << "roborio"
 
-//             onlyIf = { execute("echo Hi").result == "Hi\n" }
+            onlyIf = { execute("echo Hi").result == "Hi\n" }
 
-//             predeploy << { execute "echo Pre" }
-//             postdeploy << { execute "echo Post" }
+            // predeploy << { execute "echo Pre" }
+            // postdeploy << { execute "echo Post" }
 
-//             disabled = true
-//         }
-//         // END COMMON //
+            disabled = false
+        }
+        // END COMMON //
 
-//         // FileTreeArtifact - the directory structure is preserved
-//         fileTreeArtifact("dashboard") {
-//             files = fileTree(dir: "dashboard")
-//         }
+        // FileTreeArtifact - the directory structure is preserved
+        fileTreeArtifact("dashboard") {
+            disabled = true
+            files = fileTree(dir: "dashboard")
+            postdeploy << { execute "echo Hi" }
+        }
 
-//         commandArtifact("restartDashboard") {
-//             command = "echo Hello"
-//             dependsOn("dashboard")
-//             disabled = false
-//         }
-//     }
-// }
+        fileArtifact("config") {
+            disabled = true
+            onlyIf = { execute("ls ~lvuser/dashboard | grep \"conf.json\"").result == "conf.json\n" }
+            file = file("resources/conf.json")
+            filename = "conf.json"
+            postdeploy << { execute "echo Hi" }
+        }
+    }
+}
 
 envs {
     bootstrapDirectory = file(".")
