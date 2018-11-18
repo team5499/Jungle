@@ -3,6 +3,10 @@ plugins {
     id "jaci.gradle.EmbeddedTools" version "2018.11.14"
 }
 
+ext {
+    TEAM_NUMBER = 5499
+}
+
 repositories {
 }
 

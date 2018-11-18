@@ -3,52 +3,37 @@ import threading
 import os
 import json
 
+from page import Page
 
-class ConfigurationHandler():
+def panic(message, err=1):
+    print(message)
+    exit(err)
 
-    # minimum time between file flushes. If set too low, this can put a lot of unneccesary load on the system
-    MIN_FLUSH_PERIOD_S = 0.25
-
-    def __init__(self, file_path='./conf.json', debug=False):
+class Configuration():
+    '''This class represents a configuration for the dashboard'''
+    def __init__(self, file):
         try:
-            self.data_file = open(file_path, 'r+')
+            self.json_file = open(file, 'r+')
         except FileNotFoundError:
-            print("the specified file wasn't found")
+            panic('the specified JSON config file wasn\'t found')
             exit(1)
         try:
-            self.raw_json_obj = json.load(self.data_file)
+            self.raw_json_obj = json.load(self.json_file)
         except ValueError:
-            print('json formatting issue')
+            panic('config json formatting issue')
             exit(1)
-        self.debug = debug
-        self._flush_lock = threading.RLock()
-        self._last_flush_time = 0
-        self._check_json(self.raw_json_obj)
+        self._check_json(self.raw_json_obj) # if this passes, then we can move onto loading the page configurations
 
-    def _check_json(self, raw_json_obj):
-        problems = []
-        for k, v in raw_json_obj.items():
-            if not issubclass(v.__class__, dict):
-                problems.append(k)
-                continue
-        if len(problems) > 0:
-            print('FATAL: there were problem(s) with these variable(s):')
-            print(problems)
-            exit(1)
+        # load our widgets
+        self.widgets = []
+        for p in self.raw_json_obj['']
 
-    def get_raw_json_obj(self):
-        if self.debug:
-            self.data_file.seek(0)
-            self.raw_json_obj = json.load(self.data_file)
-        return self.raw_json_obj
+        # load our pages
+        self.pages = []
+        for p in self.raw_json_obj['pages']:
+            self.pages.append(Page(p))
 
-    def get_compact_json_string(self):
-        return json.dumps(self.get_raw_json_obj())
-
-    def get_formatted_json_string(self):
-        return json.dumps(self.get_raw_json_obj(), indent=4, sort_keys=True)
-
-    def get_page_ids(self):
+    def get_page_names(self):
         return self.get_raw_json_obj()['pages'].keys()
 
     def get_nav_bar(self):
@@ -97,3 +82,23 @@ class ConfigurationHandler():
             self.data_file.flush()  # takes time
             os.fsync(self.data_file.fileno())  # takes time
         self.last_flush_time = time.perf_counter()
+
+
+    # Utils
+    def _check_json(self, raw_json_obj):
+        '''This function checks the configuration json for `pages` and `widget_templates`'''
+        assert 'pages' in raw_json_obj, 'FATAL: the config file must have \'pages\''
+        assert 'widget_templates' in raw_json_obj, 'FATAL: the config file must have \'widget_templates\''
+        problems = []
+        for k, v in raw_json_obj.items():
+            if not issubclass(v.__class__, list):
+                problems.append(k)
+                continue
+            for d in v:
+                if not issubclass(d.__class__, dict):
+                    problems.append(k)
+                    continue
+        if len(problems) > 0:
+            print('FATAL: there were problem(s) with these variable(s):')
+            print(problems)
+            exit(1)

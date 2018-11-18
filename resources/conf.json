@@ -1,10 +1,12 @@
 {
-  "pages": {
-    "dev": {
+  "pages": [
+    {
+      "name": "dev",
       "title": "Development",
       "widgets": []
     },
-    "drive": {
+    {
+      "name": "drive",
       "title": "Drive",
       "widgets": [
         {
@@ -21,13 +23,15 @@
         }
       ]
     },
-    "test": {
+    {
+      "name": "test",
       "title": "Test",
       "widgets": []
     }
-  },
-  "widget_templates": {
-    "raw_var_editor": {
+  ],
+  "widget_templates": [
+    {
+      "type": "raw_var_editor",
       "height": null,
       "javascript_class": "RawVarEditor",
       "kwargs": {},
@@ -36,5 +40,5 @@
       },
       "width": "12rem"
     }
-  }
+  ]
 }
