@@ -1,0 +1,44 @@
+{
+  "pages": [
+    {
+      "name": "dev",
+      "title": "Development",
+      "widgets": []
+    },
+    {
+      "name": "drive",
+      "title": "Drive",
+      "widgets": [
+        {
+          "height": null,
+          "id": "test_var_editor",
+          "javascript_class": "RawVarEditor",
+          "kwargs": {},
+          "title": "Test Variable",
+          "type": "raw_var_editor",
+          "variables": {
+            "target": "TEST"
+          },
+          "width": "12rem"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "title": "Test",
+      "widgets": []
+    }
+  ],
+  "widget_templates": [
+    {
+      "type": "raw_var_editor",
+      "height": null,
+      "javascript_class": "RawVarEditor",
+      "kwargs": {},
+      "variables": {
+        "target": "TEST"
+      },
+      "width": "12rem"
+    }
+  ]
+}
